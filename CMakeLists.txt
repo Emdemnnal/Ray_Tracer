@@ -11,6 +11,8 @@ add_library(MCG
   src/MCG/MCG_GFX_Lib.cpp
 )
 
+target_link_libraries(MCG SDL2 opengl32 glew32)
+
 add_executable(Ray_Tracer
   src/Application/Main.cpp
 )
