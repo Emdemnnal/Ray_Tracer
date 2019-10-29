@@ -1,7 +1,6 @@
 #include <cmath>
 
-//#include "MCG_GFX_Lib.h"
-#include <MCG/MCG.h>
+#include "../MCG/MCG_GFX_Lib.h"
 
 int main( int argc, char *argv[] )
 {

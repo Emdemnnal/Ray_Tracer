@@ -6,7 +6,6 @@ include_directories(
 )
 
 add_library(MCG
-  src/MCG/MCG.h
   src/MCG/MCG_GFX_Lib.h
   src/MCG/MCG_GFX_Lib.cpp
 )
