@@ -6,5 +6,6 @@ class Camera;
 
 class RayTracer
 {
-	vec3 trace(Ray ray);
+public:	
+	glm::ivec3 trace(Ray ray);
 };

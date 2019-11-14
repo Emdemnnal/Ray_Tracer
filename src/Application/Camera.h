@@ -5,5 +5,6 @@ class Ray;
 
 class Camera
 {
+public:
 	Ray createRay(glm::ivec2 position);
 };

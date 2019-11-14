@@ -2,6 +2,10 @@
 
 #include "../MCG/MCG_GFX_Lib.h"
 
+#include "Ray.h"
+#include "Camera.h"
+#include "RayTracer.h"
+
 int main( int argc, char *argv[] )
 {
 	// Variable for storing window dimensions
@@ -21,19 +25,33 @@ int main( int argc, char *argv[] )
 	MCG::SetBackground( glm::ivec3(0,0,0) );
 
 	// Preparing a position to draw a pixel
-	glm::ivec2 pixelPosition = windowSize / 2;
-
+	//glm::ivec2 pixelPosition = windowSize / 2;
+	
 	// Preparing a colour to draw
 	// Colours are RGB, each value ranges between 0 and 255
-	glm::ivec3 pixelColour( 255, 0, 0 );
+	//glm::ivec3 pixelColour( 255, 0, 0 );
 
 
 	// Draws a single pixel at the specified coordinates in the specified colour!
-	MCG::DrawPixel( pixelPosition, pixelColour );
+	//MCG::DrawPixel( pixelPosition, pixelColour );
 
 	// Do any other DrawPixel calls here
 	// ...
-
+	Camera myCamera;
+	RayTracer myTracer;
+	
+	for(int h = 0; h < 480; ++h)
+	{
+		for(int w = 0; w < 640; ++w)
+		{
+			glm::ivec2 currentPixelPosition = glm::ivec2(w, h);
+			myCamera.createRay(currentPixelPosition);
+			glm::ivec3 pixelColour = myTracer.trace(currentPixelPosition);
+			MCG::DrawPixel(currentPixelPosition, pixelColour);
+		}
+	}
+	
+	
 	// Displays drawing to screen and holds until user closes window
 	// You must call this after all your drawing calls
 	// Program will exit after this line
