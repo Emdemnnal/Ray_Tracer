@@ -1,5 +1,6 @@
 #include <cmath>
 
+// MCG library from Level 4 by Leigh McLoughlin
 #include "../MCG/MCG_GFX_Lib.h"
 
 #include "Ray.h"
@@ -45,8 +46,8 @@ int main( int argc, char *argv[] )
 		for(int w = 0; w < 640; ++w)
 		{
 			glm::ivec2 currentPixelPosition = glm::ivec2(w, h);
-			myCamera.createRay(currentPixelPosition);
-			glm::ivec3 pixelColour = myTracer.trace(currentPixelPosition);
+			Ray currentRay = myCamera.createRay(currentPixelPosition);
+			glm::ivec3 pixelColour = myTracer.trace(currentRay);
 			MCG::DrawPixel(currentPixelPosition, pixelColour);
 		}
 	}

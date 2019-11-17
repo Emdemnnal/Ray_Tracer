@@ -3,9 +3,10 @@
 
 Ray Camera::createRay(glm::ivec2 position)
 {
+	// proj = glm::perspective(  );
 	Ray ray;
-	ray.origin(position, 0);
-	ray.direction(0, 0, -1);
+	ray.origin = glm::vec3(position.x,position.y, 0);
+	ray.direction = glm::vec3(0, 0, -1);
 	
 	return ray;
 };

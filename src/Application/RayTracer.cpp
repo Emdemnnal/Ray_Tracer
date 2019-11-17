@@ -2,9 +2,9 @@
 #include "Camera.h"
 #include "Ray.h"
 
-Camera RayTracer::trace(Ray ray)
+glm::ivec3 RayTracer::trace(Ray ray)
 {
-	glm::ivec3 pixelColour;
+	glm::ivec3 pixelColour(255, 0, 0);
 	
 	return pixelColour;
 }

@@ -14,6 +14,11 @@ target_link_libraries(MCG SDL2 opengl32 glew32)
 
 add_executable(Ray_Tracer
   src/Application/Main.cpp
+  src/Application/Ray.h
+  src/Application/Camera.h
+  src/Application/Camera.cpp
+  src/Application/RayTracer.h
+  src/Application/RayTracer.cpp
 )
 
 target_link_libraries(Ray_Tracer MCG)
