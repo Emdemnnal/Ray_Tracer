@@ -1,9 +1,8 @@
 #include "Object.h"
 #include "Ray.h"
 
-void Object::intersection(Ray ray)
+intersectionResult Object::intersection(Ray ray, glm::ivec3 sphereCentre, float _radius)
 {
-  Ray ray;
   bool result;
   
   return result;
