@@ -6,6 +6,7 @@
 #include "Ray.h"
 #include "Camera.h"
 #include "RayTracer.h"
+#include "SphereObject.h"
 
 int main( int argc, char *argv[] )
 {

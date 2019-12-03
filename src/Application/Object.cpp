@@ -1,16 +1,16 @@
 #include "Object.h"
 #include "Ray.h"
 
-intersectionResult Object::intersection(Ray ray, glm::ivec3 sphereCentre, float _radius)
+intersectionResult Object::intersection(Ray ray, glm::vec3 sphereCentre, float radius)
 {
-  bool result;
+  intersectionResult result;
   
   return result;
 }
 
-void Object::shade(Ray ray, glm::vec3 distance)
+glm::vec3 Object::shade(Ray ray, glm::vec3 distance)
 {
-  glm::ivec3 calculatedPixelColour;
+  glm::vec3 calculatedPixelColour;
   
   return calculatedPixelColour;
 }

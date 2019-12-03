@@ -6,5 +6,7 @@ class Ray;
 class Camera
 {
 public:
-	Ray createRay(glm::ivec2 position);
+  Ray createRay(glm::ivec2 position);
+protected:
+  glm::mat4 projMat, invProjMat;
 };

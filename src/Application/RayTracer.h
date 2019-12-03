@@ -7,5 +7,5 @@ class Camera;
 class RayTracer
 {
 public:	
-	glm::ivec3 trace(Ray ray);
+  glm::ivec3 trace(Ray ray);
 };
