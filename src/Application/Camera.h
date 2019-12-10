@@ -8,5 +8,5 @@ class Camera
 public:
   Ray createRay(glm::ivec2 position);
 protected:
-  glm::mat4 projMat, invProjMat;
+  glm::mat4 viewMat, projMat, invViewMat, invProjMat;
 };
