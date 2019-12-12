@@ -11,49 +11,62 @@ Ray Camera::createRay(glm::ivec2 position)
   return ray;
 };
 */
+Camera::Camera()
+{
+  // View Matrix.
+  viewMat = glm::mat4(1.0f);
+  // Projection Matrix.
+  projMat = glm::perspective(glm::radians(45.0f), screenWidth / screenHeight, 0.1f, 100.0f);
+  // Inverse Projection Matrix.
+  invProjMat = glm::inverse(projMat);
+  // Inverse View Matrix.
+  invViewMat = glm::inverse(viewMat);
+
+}
+
+Camera::~Camera()
+{
+  
+}
+
 Ray Camera::createRay(glm::ivec2 position)
 {
-	// Pixel Co-ordinates to map to NDC (Normalised Device Co-ordinates).
-	//glm::vec2 pixelCoords = glm::vec2(0, 0);
+  // Pixel Co-ordinates to map to NDC (Normalised Device Co-ordinates).
+  //glm::vec2 pixelCoords = glm::vec2(0, 0);
 
-	// Initialize Near and Far Plane.
-	glm::vec4 nearPlane;
-	glm::vec4 farPlane;
+  // Initialize Near and Far Plane.
+  glm::vec4 nearPlane;
+  glm::vec4 farPlane;
 	
-	// Near Plane (z = -1).
-	nearPlane.x = ((2.0 * position.x) - (2.0 * 0) / 640.0) - 1.0;
-	nearPlane.y = ((2.0 * position.y) - (2.0 * 0) / 480.0) - 1.0;
-	nearPlane.z = -1.0;
-	nearPlane.w = 1.0;
-	// Far Plane (z = 1).
-	farPlane.x = ((2.0 * position.x) - (2.0 * 0) / 640.0) - 1.0;
-	farPlane.y = ((2.0 * position.y) - (2.0 * 0) / 480.0) - 1.0;
-	farPlane.z = 1.0;
-	farPlane.w = 1.0;
+  // Near Plane (z = -1).
+  nearPlane.x = ((2.0f * position.x) - (2.0f * 0) / screenWidth) - 1.0f;
+  nearPlane.y = ((2.0f * position.y) - (2.0f * 0) / screenHeight) - 1.0f;
+  nearPlane.z = -1.0f;
+  nearPlane.w = 1.0f;
+  // Far Plane (z = 1).
+  farPlane.x = ((2.0f * position.x) - (2.0f * 0) / 640.0f) - 1.0f;
+  farPlane.y = ((2.0f * position.y) - (2.0f * 0) / 480.0f) - 1.0f;
+  farPlane.z = 1.0f;
+  farPlane.w = 1.0f;
 
-	// Inverse Projection Matrix.
-	invProjMat = glm::inverse(projMat);
-	// Inverse View Matrix.
-	invViewMat = glm::inverse(viewMat);
+  // Multiply co-ordinates by Inverse Projection Matrix (Convert to Eye Space).
+  nearPlane = invProjMat * nearPlane;
+  farPlane = invProjMat * farPlane;
 
-	// Multiply co-ordinates by Inverse Projection Matrix (Convert to Eye Space).
-	nearPlane = invProjMat * nearPlane;
-	farPlane = invProjMat * farPlane;
+  // Divide co-ordinates by w. (Convert from Left-Handed to Right-Handed system).
+  nearPlane = nearPlane / nearPlane.w;
+  farPlane = farPlane / farPlane.w;
 
-	// Divide co-ordinates by w. (Convert from Left-Handed to Right-Handed system).
-	nearPlane = nearPlane / nearPlane.w;
-	farPlane = farPlane / farPlane.w;
+  // Multiply co-ordinates by Inverse View Matrix (Convert from Eye Space to World Space).
+  nearPlane = invViewMat * nearPlane;
+  farPlane = invViewMat * farPlane;
 
-	// Multiply co-ordinates by Inverse View Matrix (Convert from Eye Space to World Space).
-	nearPlane = invViewMat * nearPlane;
-	farPlane = invViewMat * farPlane;
+  // Returned ray.
+  Ray ray;
+  ray.origin = glm::vec4(nearPlane);
+  ray.direction = glm::normalize(glm::vec4(farPlane) - nearPlane);
 
-	// Returned ray.
-	Ray ray;
-	ray.origin = glm::vec4(nearPlane);
-	ray.direction = glm::normalize(glm::vec4(farPlane) - nearPlane);
-
-	return ray;
+  return ray;
 };
 
 
