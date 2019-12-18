@@ -9,7 +9,7 @@ glm::ivec3 RayTracer::trace(Ray ray)
   glm::ivec3 pixelColour(255, 0, 0); // Red Pixels.
 	
   // Sphere Settings.
-  SphereObject sphere(glm::vec3(300, 300, 300), 100.0f);
+  SphereObject sphere(glm::vec3(0, 0, -10), 1.0f);
   
   //Intersection Pass.
   intersectionResult rtn;

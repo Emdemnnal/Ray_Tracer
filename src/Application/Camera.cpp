@@ -39,13 +39,12 @@ Ray Camera::createRay(glm::ivec2 position)
   glm::vec4 farPlane;
 	
   // Near Plane (z = -1).
-  nearPlane.x = ((2.0f * position.x) - (2.0f * 0) / screenWidth) - 1.0f;
-  nearPlane.y = ((2.0f * position.y) - (2.0f * 0) / screenHeight) - 1.0f;
+  nearPlane.x = farPlane.x = (2.0f * (float)position.x / (float)screenWidth) - 1.0f;
+  nearPlane.y = farPlane.y = (2.0f * (float)position.y / (float)screenHeight) - 1.0f;
+  
   nearPlane.z = -1.0f;
   nearPlane.w = 1.0f;
   // Far Plane (z = 1).
-  farPlane.x = ((2.0f * position.x) - (2.0f * 0) / 640.0f) - 1.0f;
-  farPlane.y = ((2.0f * position.y) - (2.0f * 0) / 480.0f) - 1.0f;
   farPlane.z = 1.0f;
   farPlane.w = 1.0f;
 
