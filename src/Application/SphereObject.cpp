@@ -31,6 +31,7 @@ SphereObject::~SphereObject()
 
 intersectionResult SphereObject::intersection(Ray ray, glm::vec3 sphereCentre, float radius)
 {
+  /*
   glm::ivec3 closestPoint;
   glm::ivec3 calculatedVector;
   float calculatedDistance;
@@ -60,6 +61,57 @@ intersectionResult SphereObject::intersection(Ray ray, glm::vec3 sphereCentre, f
     // Ray doesn't intersect sphere.
 	rtn.hit = false;
 	rtn.distance = 0;
+  }
+  
+  return rtn;
+  */
+
+  // Ray's origin.
+  glm::vec3 a = ray.origin;
+  // Ray's direction.
+  glm::vec3 n = ray.direction;
+  // Centre of sphere.
+  glm::vec3 P = sphereCentre;
+  // Radius of sphere.
+  float r = radius;
+  // Calculated distance.
+  float d;
+  // Closest point X on the line to a query point P.
+  glm::vec3 X; // X = a + ((P - a) . n)n
+  glm::vec3 X2; // ((P - a) . n)n
+  float X3; // ((P - a) . n)
+  
+  // X = a + ((P - a) . n)n
+  X = a + (glm::dot((P - a), n) * n);
+  // ((P - a) . n)n
+  X2 = (glm::dot((P - a), n) * n);
+  // ((P - a) . n)
+  X3 = glm::dot((P - a), n);
+  // d = ||P - a - ((P-a) . n)n||
+  d = glm::length(P - a - X2);
+  
+  // Calculated value x.
+  // x = sqrt(r*2 - d*2)
+  float x = glm::sqrt(glm::pow(r, 2) - glm::pow(d, 2));
+  
+  // First intersection point. 
+  // a + (((P - a) . n) - x)n
+  glm::vec3 iPoint =  a + (X3 - x) * n;
+  
+  // Allows return of two values.
+  intersectionResult rtn;
+  
+  if(d <= r)
+  {
+    // Ray intersects sphere.
+	rtn.hit = true;
+	rtn.distance = (X3 - x);
+	return rtn;
+  }
+  else
+  {
+    // Ray doesn't intersect sphere.
+	rtn.hit = false;
   }
   
   return rtn;

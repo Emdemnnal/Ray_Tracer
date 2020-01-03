@@ -1,4 +1,9 @@
 #include <cmath>
+#include <mutex>
+#include <thread>
+#include <vector>
+#include <iostream>
+#include <memory>
 
 // MCG library from Level 4 by Leigh McLoughlin
 #include "../MCG/MCG_GFX_Lib.h"
@@ -7,6 +12,13 @@
 #include "Camera.h"
 #include "RayTracer.h"
 #include "SphereObject.h"
+
+// Function Prototyping.
+void rayTracer();
+void threadedRayTracer(int _startXPos, int _endXPos);
+
+// Mutex.
+std::mutex mtx;
 
 int main( int argc, char *argv[] )
 {
@@ -39,54 +51,123 @@ int main( int argc, char *argv[] )
 
 	// Do any other DrawPixel calls here
 	// ...
-	Camera myCamera;
-	RayTracer myTracer;
 	
-	for(int h = 0; h < 480; ++h)
+	int numberOfThreads = 2;
+	
+	int startXPos = 0;
+	int endXPos = 640;
+	  
+	int offset = 640 / numberOfThreads;
+	
+	// Vector of threads.
+	//std::vector<std::thread> threads;
+	
+	// Vector of threads.
+	//std::vector<std::shared_ptr<std::thread>> threads;
+	
+	/*
+	// Array of threads.
+	std::thread threads[8];
+	
+	// Filling up the vector/array of threads.
+	for(int i = 0; i < 8; i++)
 	{
-		for(int w = 0; w < 640; ++w)
-		{
-			glm::ivec2 currentPixelPosition = glm::ivec2(w, h);
-			Ray currentRay = myCamera.createRay(currentPixelPosition);
-			glm::ivec3 pixelColour = myTracer.trace(currentRay);
-			MCG::DrawPixel(currentPixelPosition, pixelColour);
-		}
+	  endXPos = startXPos + offset;
+	  threads[i] = std::thread(threadedRayTracer, startXPos, endXPos);
+	  startXPos = startXPos + offset;
+	}
+	*/
+	
+	
+	// Vector of threads.
+	std::vector<std::thread> threads;
+	
+	// Filling up the vector/array of threads.
+	for(int i = 0; i < numberOfThreads; i++)
+	{
+	  endXPos = startXPos + offset;
+	  
+	  //std::thread thd(threadedRayTracer, startXPos, endXPos);
+	  
+	  //threads.push_back(thd);
+
+	  threads.push_back(std::thread(threadedRayTracer, startXPos, endXPos));
+	  
+	  startXPos = startXPos + offset;
 	}
 	
+	
+	/*
+	// Filling up the vector/array of threads.
+	for(int i = 0; i < threads.size(); i++)
+	{
+	  endXPos = startXPos + offset;
+	  
+	  // Shared pointer thread.
+	  std::shared_ptr<std::thread> thd;
+	  
+	  // Call the function.
+	  thd = std::make_shared<std::thread>(threadedRayTracer, startXPos, endXPos);
+	  
+	  // Push back onto vector of threads.
+	  threads.push_back(thd);
+	  
+	  startXPos = startXPos + offset;
+	}
+	*/
+	
+	// Synchronize threads.
+	for(int i = 0; i < numberOfThreads; i++)
+	{
+	  threads[i].join();
+	}
+	
+	//rayTracer();
 	
 	// Displays drawing to screen and holds until user closes window
 	// You must call this after all your drawing calls
 	// Program will exit after this line
 	return MCG::ShowAndHold();
+}
 
-
-
-
-
-	// Advanced access - comment out the above DrawPixel and MCG::ShowAndHold lines, then uncomment the following:
-
-	/*
-	// Variable to keep track of time
-	float timer = 0.0f;
-
-	// This is our game loop
-	// It will run until the user presses 'escape' or closes the window
-	while( MCG::ProcessFrame() )
-	{
-		// Set every pixel to the same colour
-		MCG::SetBackground( glm::ivec3( 0, 0, 0 ) );
-
-		// Change our pixel's X coordinate according to time
-		pixelPosition.x = (windowSize.x / 2) + (int)(sin(timer) * 100.0f);
-		// Update our time variable
-		timer += 1.0f / 60.0f;
-
-		// Draw the pixel to the screen
-		MCG::DrawPixel( pixelPosition, pixelColour );
-
+void rayTracer()
+{
+  Camera myCamera;
+  RayTracer myTracer;
+	
+  for(int h = 0; h < 480; ++h)
+    {
+	  for(int w = 0; w < 640; ++w)
+	  {
+			glm::ivec2 currentPixelPosition = glm::ivec2(w, h);
+			Ray currentRay = myCamera.createRay(currentPixelPosition);
+			glm::ivec3 pixelColour = myTracer.trace(currentRay);
+			MCG::DrawPixel(currentPixelPosition, pixelColour);
+	  }
 	}
+}
 
-	return 0;
-	*/
-
+void threadedRayTracer(int _startXPos, int _endXPos)
+{
+  int startXPos = _startXPos;
+  int endXPos = _endXPos;
+	
+  Camera myCamera;
+  RayTracer myTracer;
+	
+  for(int h = 0; h < 480; ++h)
+  {
+	for(int w = startXPos; w < endXPos; ++w)
+	{
+	  glm::ivec2 currentPixelPosition = glm::ivec2(w, h);
+	  Ray currentRay = myCamera.createRay(currentPixelPosition);
+	  glm::ivec3 pixelColour = myTracer.trace(currentRay);
+			
+	  mtx.lock();
+	  MCG::DrawPixel(currentPixelPosition, pixelColour);
+	  mtx.unlock();
+	}
+  }
+  
+  
 }
