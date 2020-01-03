@@ -22,7 +22,7 @@ public:
   
   // Calculation Functions.
   intersectionResult intersection(Ray ray, glm::vec3 sphereCentre, float radius);
-  glm::vec3 shade(Ray ray, glm::vec3 distance);
+  glm::vec3 shade(Ray ray, glm::vec3 intersectionPoint);
   
   // Setters.
   void setSphereCentre(glm::vec3 _sphereCentre);

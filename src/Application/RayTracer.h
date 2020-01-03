@@ -6,6 +6,8 @@ class Camera;
 
 class RayTracer
 {
+protected:
+	// lsit goes here
 public:	
   glm::ivec3 trace(Ray ray);
 };

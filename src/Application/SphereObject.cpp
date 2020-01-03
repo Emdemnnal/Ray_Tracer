@@ -106,6 +106,7 @@ intersectionResult SphereObject::intersection(Ray ray, glm::vec3 sphereCentre, f
     // Ray intersects sphere.
 	rtn.hit = true;
 	rtn.distance = (X3 - x);
+	rtn.intersectionPoint = iPoint;
 	return rtn;
   }
   else
@@ -117,7 +118,7 @@ intersectionResult SphereObject::intersection(Ray ray, glm::vec3 sphereCentre, f
   return rtn;
 }
 
-glm::vec3 SphereObject::shade(Ray ray, glm::vec3 distance)
+glm::vec3 SphereObject::shade(Ray ray, glm::vec3 intersectionPoint)
 {
   glm::vec3 calculatedPixelColour;
   

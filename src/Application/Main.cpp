@@ -87,10 +87,14 @@ int main( int argc, char *argv[] )
 	{
 	  endXPos = startXPos + offset;
 	  
-	  //std::thread thd(threadedRayTracer, startXPos, endXPos);
+	//  std::thread thd(threadedRayTracer, startXPos, endXPos);
 	  
-	  //threads.push_back(thd);
+	 // threads.push_back(thd);
 
+	  // Pass in the scene as a parameter, so the threads are sharing the same scene
+	  // THis means you can initialise locations to random values for example
+
+	  // This method works because std::thread is an rvalue, so the push_back uses a std::move rather than a copy (can't copy a thread object).
 	  threads.push_back(std::thread(threadedRayTracer, startXPos, endXPos));
 	  
 	  startXPos = startXPos + offset;

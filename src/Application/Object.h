@@ -10,13 +10,15 @@ struct intersectionResult
 {
   bool hit;
   float distance;
+  glm::vec3 intersectionPoint;
 };
 
 class Object
 {
 public:
   virtual intersectionResult intersection(Ray ray, glm::vec3 sphereCentre, float radius);
-  virtual glm::vec3 shade(Ray ray, glm::vec3 distance);
+  virtual glm::vec3 shade(Ray ray, glm::vec3 intersectionPoint);
+  // virtual glm::vec3 GetNormal(glm::vec3 intersectionPoint);
 };
 
 #endif
