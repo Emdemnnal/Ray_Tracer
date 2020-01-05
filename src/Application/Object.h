@@ -16,9 +16,8 @@ struct intersectionResult
 class Object
 {
 public:
-  virtual intersectionResult intersection(Ray ray, glm::vec3 sphereCentre, float radius);
+  virtual intersectionResult intersection(Ray ray);
   virtual glm::vec3 shade(Ray ray, glm::vec3 intersectionPoint);
-  // virtual glm::vec3 GetNormal(glm::vec3 intersectionPoint);
 };
 
 #endif

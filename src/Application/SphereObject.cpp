@@ -14,14 +14,18 @@ SphereObject::SphereObject()
 {
   // Default SphereObject private variables when default constructed.
   sphereCentre = glm::vec3(0, 100, 100);
+  sphereColour = glm::vec3(255, 0, 0);
   radius = 2.0f;
+  lightColour = glm::vec3(255, 255, 255);
 }
 
-SphereObject::SphereObject(glm::vec3 _sphereCentre, float _radius)
+SphereObject::SphereObject(glm::vec3 _sphereCentre, glm::vec3 _sphereColour, float _radius, glm::vec3 _lightColour)
 {
   // For setting private variables of an instance of a SphereObject when constructed.
-  setSphereCentre(_sphereCentre);
-  setRadius(_radius);
+  sphereCentre = _sphereCentre;
+  sphereColour = _sphereColour;
+  radius = _radius;
+  lightColour = _lightColour;
 }
 
 SphereObject::~SphereObject()
@@ -29,7 +33,7 @@ SphereObject::~SphereObject()
   
 }
 
-intersectionResult SphereObject::intersection(Ray ray, glm::vec3 sphereCentre, float radius)
+intersectionResult SphereObject::intersection(Ray ray)
 {
   /*
   glm::ivec3 closestPoint;
@@ -118,28 +122,35 @@ intersectionResult SphereObject::intersection(Ray ray, glm::vec3 sphereCentre, f
   return rtn;
 }
 
-glm::vec3 SphereObject::shade(Ray ray, glm::vec3 intersectionPoint)
+glm::vec3 SphereObject::shade(glm::vec3 surfaceNormal)
 {
-  glm::vec3 calculatedPixelColour;
+  // L = (wi . N)LiKd
+  // L
+  glm::vec3 calculatedPixelColour = sphereColour;
+  
+  // Vector pointing towards the light source.
+  glm::vec3 wi = glm::vec3(100, 100, -10);
+  // Normalize as it is a unit vector.
+  glm::normalize(wi);
+  // Light Colour (Li).
+  glm::vec3 Li = lightColour;
+  // Material/Sphere Colour (Kd).
+  glm::vec3 Kd = sphereColour;
+  // Make sure dot product is always >= 0.
+  float dotProductCheck = glm::dot(wi, surfaceNormal);
+  // Do the full calculation.
+  calculatedPixelColour = glm::max(dotProductCheck, 0.0f) * Li * Kd;
   
   return calculatedPixelColour;
 }
 
-void SphereObject::setSphereCentre(glm::vec3 _sphereCentre)
+glm::vec3 SphereObject::getNormal(glm::vec3 intersectionPoint)
 {
-  sphereCentre = _sphereCentre;
+  // Get the normal of a point on the sphere object.
+  glm::vec3 normal = intersectionPoint - sphereCentre;
+  // Normalize this calculated vector.
+  normal = glm::normalize(normal);
+  
+  return normal;
 }
 
-void SphereObject::setRadius(float _radius)
-{
-  radius = _radius;
-}
-
-glm::vec3 SphereObject::getSphereCentre()
-{
-  return sphereCentre;
-}
-float SphereObject::getRadius()
-{
-  return radius;
-}
