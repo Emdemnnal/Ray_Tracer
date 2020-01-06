@@ -129,9 +129,9 @@ glm::vec3 SphereObject::shade(glm::vec3 surfaceNormal)
   glm::vec3 calculatedPixelColour = sphereColour;
   
   // Vector pointing towards the light source.
-  glm::vec3 wi = glm::vec3(100, 100, -10);
+  glm::vec3 wi = glm::vec3(-10, -10, 5);
   // Normalize as it is a unit vector.
-  glm::normalize(wi);
+  wi = glm::normalize(wi);
   // Light Colour (Li).
   glm::vec3 Li = lightColour;
   // Material/Sphere Colour (Kd).
