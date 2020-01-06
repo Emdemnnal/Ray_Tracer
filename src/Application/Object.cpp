@@ -8,10 +8,16 @@ intersectionResult Object::intersection(Ray ray)
   return result;
 }
 
-glm::vec3 Object::shade(Ray ray, glm::vec3 distance)
+glm::vec3 Object::shade(glm::vec3 sphereNormal)
 {
   glm::vec3 calculatedPixelColour;
   
   return calculatedPixelColour;
 }
 
+glm::vec3 Object::getNormal(glm::vec3 intersectionPoint)
+{
+  glm::vec3 normal;
+
+  return normal;
+}

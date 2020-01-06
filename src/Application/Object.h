@@ -17,7 +17,8 @@ class Object
 {
 public:
   virtual intersectionResult intersection(Ray ray);
-  virtual glm::vec3 shade(Ray ray, glm::vec3 intersectionPoint);
+  virtual glm::vec3 shade(glm::vec3 sphereNormal);
+  virtual glm::vec3 getNormal(glm::vec3 intersectionPoint);
 };
 
 #endif
