@@ -1,15 +1,6 @@
 #include "SphereObject.h"
 #include "Ray.h"
-/*
-glm::ivec3 SphereObject::pointToLine(Ray ray, glm::ivec3 queryPoint)
-{
-  glm::ivec3 closestPoint;
-  
-  closestPoint = ray + (glm::dot((queryPoint - ray.origin), ray.direction) * ray.direction);
-  
-  returns closestPoint;
-}
-*/
+
 SphereObject::SphereObject()
 {
   // Default SphereObject private variables when default constructed.
@@ -35,41 +26,6 @@ SphereObject::~SphereObject()
 
 intersectionResult SphereObject::intersection(Ray ray)
 {
-  /*
-  glm::ivec3 closestPoint;
-  glm::ivec3 calculatedVector;
-  float calculatedDistance;
-  
-  // Finds closest point to line (X).
-  closestPoint = ray.origin + (glm::dot((sphereCentre - ray.origin), ray.direction) * ray.direction);
-  // ||P - X|| <= R
-  //calculatedVector = glm::distance(sphereCentre, closestPoint);
-  // d = ||P - a - ((P-a) . n)n||
-  calculatedDistance = glm::length((sphereCentre - ray.origin - glm::dot(sphereCentre - ray.origin, ray.direction) * ray.direction));
-  // sqrt(r*2 - d*2).
-  float x = glm::sqrt((glm::pow(radius, 2) - glm::pow(calculatedDistance, 2)));
-  
-  // Allows return of two values.
-  intersectionResult rtn;
-  
-  if(calculatedDistance <= radius)
-  {
-    // Ray intersects sphere.
-	rtn.hit = true;
-	rtn.distance = glm::dot((sphereCentre - ray.origin), ray.direction) - x;
-	
-	return rtn;
-  }
-  else
-  {
-    // Ray doesn't intersect sphere.
-	rtn.hit = false;
-	rtn.distance = 0;
-  }
-  
-  return rtn;
-  */
-
   // Ray's origin.
   glm::vec3 a = ray.origin;
   // Ray's direction.
@@ -86,7 +42,7 @@ intersectionResult SphereObject::intersection(Ray ray)
   float X3; // ((P - a) . n)
   
   // X = a + ((P - a) . n)n
-  X = a + (glm::dot((P - a), n) * n);
+  //X = a + (glm::dot((P - a), n) * n);
   // ((P - a) . n)n
   X2 = (glm::dot((P - a), n) * n);
   // ((P - a) . n)
@@ -108,15 +64,15 @@ intersectionResult SphereObject::intersection(Ray ray)
   if(d <= r)
   {
     // Ray intersects sphere.
-	rtn.hit = true;
-	rtn.distance = (X3 - x);
-	rtn.intersectionPoint = iPoint;
-	return rtn;
+    rtn.hit = true;
+    rtn.distance = (X3 - x);
+    rtn.intersectionPoint = iPoint;
+    return rtn;
   }
   else
   {
     // Ray doesn't intersect sphere.
-	rtn.hit = false;
+    rtn.hit = false;
   }
   
   return rtn;

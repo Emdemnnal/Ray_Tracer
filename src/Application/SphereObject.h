@@ -15,7 +15,6 @@ private:
   glm::vec3 lightColour;
 
 public:
-  //glm::ivec3 pointToLine(Ray ray, glm::ivec3 queryPoint);
   // Default Constructor.
   SphereObject();
   // Parameterized Constructor.

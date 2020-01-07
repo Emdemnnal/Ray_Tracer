@@ -62,7 +62,7 @@ glm::ivec3 RayTracer::trace(Ray ray)
   }
   else
   {
-    pixelColour = glm::ivec3(0, 0, 0);
+    pixelColour = glm::ivec3(50, 50, 50);
   }
   
   return pixelColour;
