@@ -16,7 +16,7 @@
 
 // Function Prototyping.
 void rayTracer();
-void threadedRayTracer(int _startXPos, int _endXPos);
+void threadedRayTracer(int _startXPos, int _endXPos, Camera &myCamera, RayTracer &myTracer);
 
 // Mutex.
 std::mutex mtx;
@@ -53,6 +53,10 @@ int main( int argc, char *argv[] )
 	// Start.
 	clock_t startTime = clock();
 	
+	// Scene.
+	Camera myCamera;
+    RayTracer myTracer;
+	
 	// Filling up the vector/array of threads.
 	for(int i = 0; i < numberOfThreads; i++)
 	{
@@ -62,7 +66,7 @@ int main( int argc, char *argv[] )
 	  // THis means you can initialise locations to random values for example
 
 	  // This method works because std::thread is an rvalue, so the push_back uses a std::move rather than a copy (can't copy a thread object).
-	  threads.push_back(std::thread(threadedRayTracer, startXPos, endXPos));
+	  threads.push_back(std::thread(threadedRayTracer, startXPos, endXPos, myCamera, myTracer));
 	  
 	  startXPos = startXPos + offset;
 	}
@@ -101,17 +105,11 @@ void rayTracer()
 	}
 }
 
-void threadedRayTracer(int _startXPos, int _endXPos)
+void threadedRayTracer(int _startXPos, int _endXPos, Camera &myCamera, RayTracer &myTracer)
 {
-  int startXPos = _startXPos;
-  int endXPos = _endXPos;
-	
-  Camera myCamera;
-  RayTracer myTracer;
-	
   for(int h = 0; h < 480; ++h)
   {
-	for(int w = startXPos; w < endXPos; ++w)
+	for(int w = _startXPos; w < _endXPos; ++w)
 	{
 	  glm::ivec2 currentPixelPosition = glm::ivec2(w, h);
 	  Ray currentRay = myCamera.createRay(currentPixelPosition);
