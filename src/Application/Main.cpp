@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include <ctime>
 
 // MCG library from Level 4 by Leigh McLoughlin
 #include "../MCG/MCG_GFX_Lib.h"
@@ -33,26 +34,13 @@ int main( int argc, char *argv[] )
 		// (this is very unlikely)
 		return -1;
 	}
-
-	// Sets every pixel to the same colour
-	// parameters are RGBA, numbers are from 0 to 255
-	MCG::SetBackground( glm::ivec3(0,0,0) );
-
-	// Preparing a position to draw a pixel
-	//glm::ivec2 pixelPosition = windowSize / 2;
 	
-	// Preparing a colour to draw
-	// Colours are RGB, each value ranges between 0 and 255
-	//glm::ivec3 pixelColour( 255, 0, 0 );
-
-
-	// Draws a single pixel at the specified coordinates in the specified colour!
-	//MCG::DrawPixel( pixelPosition, pixelColour );
-
 	// Do any other DrawPixel calls here
 	// ...
 	
-	int numberOfThreads = 2;
+	// Parameters.
+	int numberOfThreads = 4;
+	std::cout << "The number of threads: " << numberOfThreads << std::endl;
 	
 	int startXPos = 0;
 	int endXPos = 640;
@@ -60,36 +48,15 @@ int main( int argc, char *argv[] )
 	int offset = 640 / numberOfThreads;
 	
 	// Vector of threads.
-	//std::vector<std::thread> threads;
-	
-	// Vector of threads.
-	//std::vector<std::shared_ptr<std::thread>> threads;
-	
-	/*
-	// Array of threads.
-	std::thread threads[8];
-	
-	// Filling up the vector/array of threads.
-	for(int i = 0; i < 8; i++)
-	{
-	  endXPos = startXPos + offset;
-	  threads[i] = std::thread(threadedRayTracer, startXPos, endXPos);
-	  startXPos = startXPos + offset;
-	}
-	*/
-	
-	
-	// Vector of threads.
 	std::vector<std::thread> threads;
+	
+	// Start.
+	clock_t startTime = clock();
 	
 	// Filling up the vector/array of threads.
 	for(int i = 0; i < numberOfThreads; i++)
 	{
 	  endXPos = startXPos + offset;
-	  
-	//  std::thread thd(threadedRayTracer, startXPos, endXPos);
-	  
-	 // threads.push_back(thd);
 
 	  // Pass in the scene as a parameter, so the threads are sharing the same scene
 	  // THis means you can initialise locations to random values for example
@@ -100,33 +67,16 @@ int main( int argc, char *argv[] )
 	  startXPos = startXPos + offset;
 	}
 	
-	
-	/*
-	// Filling up the vector/array of threads.
-	for(int i = 0; i < threads.size(); i++)
-	{
-	  endXPos = startXPos + offset;
-	  
-	  // Shared pointer thread.
-	  std::shared_ptr<std::thread> thd;
-	  
-	  // Call the function.
-	  thd = std::make_shared<std::thread>(threadedRayTracer, startXPos, endXPos);
-	  
-	  // Push back onto vector of threads.
-	  threads.push_back(thd);
-	  
-	  startXPos = startXPos + offset;
-	}
-	*/
-	
 	// Synchronize threads.
 	for(int i = 0; i < numberOfThreads; i++)
 	{
 	  threads[i].join();
 	}
 	
-	//rayTracer();
+	// End.
+	clock_t finishTime = clock();
+	double timeTaken = double(finishTime - startTime);
+	std::cout << "Time taken to finish rendering (ms): " << timeTaken << std::endl;
 	
 	// Displays drawing to screen and holds until user closes window
 	// You must call this after all your drawing calls
