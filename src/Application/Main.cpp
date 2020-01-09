@@ -39,7 +39,7 @@ int main( int argc, char *argv[] )
 	// ...
 	
 	// Parameters.
-	int numberOfThreads = 4;
+	int numberOfThreads = 128;
 	std::cout << "The number of threads: " << numberOfThreads << std::endl;
 	
 	int startXPos = 0;
